@@ -20,6 +20,10 @@ class DatabaseSeeder extends Seeder
         $role->name = 'superuser';
         $role->save();
 
+        $role2 = new Role();
+        $role2->name = 'user';
+        $role2->save();
+
         DB::table('users')->delete();
 
         $users = array(
