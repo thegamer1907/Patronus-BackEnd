@@ -27,11 +27,11 @@ class DatabaseSeeder extends Seeder
         DB::table('users')->delete();
 
         $users = array(
-            ['name' => 'Harshit Agarwal', 'email' => 'harshitagar1907@gmail.com', 'password' => Hash::make('secret'),
+            ['name' => 'Harshit Agarwal', 'email' => 'harshitagar1907@gmail.com', 'password' => 'secret',
                 'govt_id' => '94826895', 'govt_id_type' => 'Aadhar', 'address' => 'Chennai'],
-            ['name' => 'Mukesh N Chugani', 'email' => 'mukeshchugani10@gmail.com', 'password' => Hash::make('secret'),
+            ['name' => 'Mukesh N Chugani', 'email' => 'mukeshchugani10@gmail.com', 'password' => 'secret',
                 'govt_id' => '9048690', 'govt_id_type' => 'Aadhar', 'address' => 'Vijaywada'],
-            ['name' => 'Akash K Ravi', 'email' => 'akashkravi@gmail.com', 'password' => Hash::make('secret'),
+            ['name' => 'Akash K Ravi', 'email' => 'akashkravi@gmail.com', 'password' => 'secret',
                 'govt_id' => '4839593', 'govt_id_type' => 'Aadhar', 'address' => 'Coimbatore']
         );
         // Loop through each user above and create the record for them in the database

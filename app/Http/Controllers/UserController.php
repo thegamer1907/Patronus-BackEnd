@@ -27,19 +27,14 @@ class UserController extends Controller
 
         if ($validator->fails()) {
 
-            return response()->json(["success" => false, "error" =>$validator->messages() ],400);
+            return response()->json(["success" => false, "error" =>$validator->errors()->first()],400);
         }
 
+
         $user = new User();
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
-        $user->password = Hash::make($request->input('password'));
-        $user->govt_id = $request->input('govt_id');
-        $user->govt_id_type = $request->input('govt_id_type');
-        $user->address = $request->input('address');
-        $user->save();
-        $user1 = User::where('email', '=', $request->only("email"))->first();
-        $role = Role::where('name', '=', 'user')->first();
+        $user->create($request->only($user->getFillable()));
+        $user1 = User::whereEmail($request->email)->firstorfail();
+        $role = Role::whereName('user')->firstorfail();
         $user1->roles()->attach($role->id);
         return response()->json(["success" => true,"message" => "User created Successfully"],200);
     }

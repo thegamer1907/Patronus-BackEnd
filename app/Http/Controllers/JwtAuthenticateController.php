@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use http\Env\Response;
 use Illuminate\Http\Request;
 use App\Permission;
 use App\Role;
@@ -11,6 +12,7 @@ use App\User;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Log;
@@ -26,10 +28,16 @@ class JwtAuthenticateController extends Controller
     public function authenticate(Request $request)
     {
         $credentials = $request->only('email', 'password');
+//        dd($credentials);
+
+        $user = User::whereEmail($request->email)->wherePassword($request->password)->first();
+        if(!$user)
+            return response()->json(['error' => 'invalid_credentials'], 401);
+        $role  = $user->roles;
 
         try {
             // verify the credentials and create a token for the user
-            if (! $token = JWTAuth::attempt($credentials)) {
+            if (! $token = JWTAuth::fromUser($user)) {
                 return response()->json(['error' => 'invalid_credentials'], 401);
             }
         } catch (JWTException $e) {
@@ -38,7 +46,7 @@ class JwtAuthenticateController extends Controller
         }
 
         // if no errors are encountered we can return a JWT
-        return response()->json(compact('token'));
+        return response()->json(['token' => $token, 'role' => $role[0]->name]);
     }
 
     public function createRole(Request $request){
