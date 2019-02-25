@@ -33,5 +33,14 @@ Route::group(['middleware' => ['ability:superuser,create_user']], function()
     Route::get('/users', 'JwtAuthenticateController@index');
 });
 
+Route::group(['middleware' => ['ability:user|superuser,create_user']], function()
+{
+    // Protected route
+    Route::post('/changepassword', 'UserController@changepassword');
+});
+
+
+
 //Login Route
 Route::post('/login', 'JwtAuthenticateController@authenticate');
+Route::post('/forgotpassword', 'UserController@forgot');
