@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 use http\Env\Response;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use App\User;
 use App\Role;
+use App\SendMail;
 use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
@@ -63,7 +63,7 @@ class UserController extends Controller
     public function forgot(Request $request)
     {
         $validator = Validator::make($request->all(),[
-            'email' => 'required|unique:users'
+            'email' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -71,34 +71,18 @@ class UserController extends Controller
             return response()->json(["success" => false, "error" =>$validator->errors()->first()],400);
         }
 
-        $random_password = str_random(60);
-        $user = User::whereEmail($request->email)->update(['password' => $random_password]);
-        return response()->json(["success" => true,"message" => "User created Successfully"],200);
+        $random_password = str_random(8);
+
+        $status = SendMail::send($request->email,"Password Change Request","Your new password is " . $random_password);
+        if($status == 1)
+        {
+            $user = User::whereEmail($request->email)->update(['password' => $random_password]);
+            return response()->json(["success" => true,"message" => "Password Reset Successful"],200);
+        }
+        else
+        {
+            return response()->json(["success" => false,"message" => "Mail not Sent"],417);
+        }
     }
 
-    public function sendMail($email ,$subject, $message)
-    {
-
-        $username = env('MAIL_USERNAME', NULL);
-        if(!($username))
-            return response()->json([
-                'success' => false,
-                'message' => 'Sorry, The mail settings are not configured'
-            ], 500);
-
-        $message_ = (string) $message;
-
-            try {
-                Mail::send([], [], function ($message) use ($email, $message_, $username,$subject) {
-                    $message->from($username, 'MAIL HANGER');
-                    $message->to($email);
-                    $message->subject($subject);
-                    $message->setBody($message_ , 'text/html');
-                    $message->priority(3);
-                });
-            } catch (Exception $e) {
-                return 0;
-            }
-        return 1;
-    }
 }
