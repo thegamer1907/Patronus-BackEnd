@@ -31,14 +31,25 @@ Route::group(['middleware' => ['ability:superuser,create_user']], function()
     Route::post('/attach-permission', 'JwtAuthenticateController@attachPermission');
     // Protected route
     Route::get('/users', 'JwtAuthenticateController@index');
+    Route::post('/deleteuser', 'UserController@deleteuser');
 });
 
 Route::group(['middleware' => ['ability:user|superuser,create_user']], function()
 {
     // Protected route
     Route::post('/changepassword', 'UserController@changepassword');
+    Route::get('/overview', 'UserController@overview');
+    Route::post('/addbenificiary', 'UserController@addbenificiary');
+    Route::get('/viewbenificiary', 'UserController@viewbenificiary');
+    Route::post('/deletebenificiary', 'UserController@deletebenificiary');
+    Route::post('/filecomplaint', 'UserController@filecomplaint');
+    Route::post('/resolvecomplaint', 'UserController@resolvecomplaint');
 });
 
+//Route::group(['middleware' => ['ability:bankmanager|superuser,create_user']], function()
+//{
+//    Route::post('/resolvecomplaint', 'UserController@resolvecomplaint');
+//});
 
 
 //Login Route

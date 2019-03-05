@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\User;
+use App\Account;
 use App\Role;
 
 class DatabaseSeeder extends Seeder
@@ -34,13 +35,24 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Akash K Ravi', 'email' => 'akashkravi@gmail.com', 'password' => 'secret',
                 'govt_id' => '4839593', 'govt_id_type' => 'Aadhar', 'address' => 'Coimbatore']
         );
-        // Loop through each user above and create the record for them in the database
+
+        $accounts = array(
+            ['email' => 'harshitagar1907@gmail.com', 'account_no' => 1000 , 'balance' => 100000],
+            ['email' => 'mukeshchugani10@gmail.com', 'account_no' => 1001 , 'balance' => 100000],
+            ['email' => 'akashkravi@gmail.com', 'account_no' => 1002 , 'balance' => 100000]
+        );
+
         foreach ($users as $user)
         {
             User::create($user);
             $user1 = User::where('email', '=', $user['email'])->first();
             $role = Role::where('name', '=', 'superuser')->first();
             $user1->roles()->attach($role->id);
+        }
+
+        foreach($accounts as $account)
+        {
+            Account::create($account);
         }
     }
 }

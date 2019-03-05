@@ -32,6 +32,11 @@ class User extends Model implements AuthenticatableContract,
         return $this->fillable;
     }
 
+    public function acc()
+    {
+        return $this->hasOne('App\Account', 'email');
+    }
+
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -46,6 +51,9 @@ class User extends Model implements AuthenticatableContract,
      *
      * @var array
      */
+
+
+
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
