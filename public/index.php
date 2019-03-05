@@ -55,6 +55,6 @@ $response = $kernel->handle(
     $request = Illuminate\Http\Request::capture()
 );
 
-$response->header('Access-Control-Allow-Origin', '*')->send();
+$response->header('Access-Control-Allow-Origin', '*')->header('Access-Control-Allow-Methods','*')->send();
 
 $kernel->terminate($request, $response);

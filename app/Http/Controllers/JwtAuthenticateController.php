@@ -34,6 +34,7 @@ class JwtAuthenticateController extends Controller
         if(!$user)
             return response()->json(['error' => 'invalid_credentials'], 401);
         $role  = $user->roles;
+        $name = $user->name;
 
         try {
             // verify the credentials and create a token for the user
@@ -46,7 +47,7 @@ class JwtAuthenticateController extends Controller
         }
 
         // if no errors are encountered we can return a JWT
-        return response()->json(['token' => $token, 'role' => $role[0]->name]);
+        return response()->json(['token' => $token, 'role' => $role[0]->name, 'name' => $name]);
     }
 
     public function createRole(Request $request){
