@@ -197,6 +197,11 @@ class UserController extends Controller
         return response()->json(["success" => true, "message" =>"Resolved Successfully"],200);
     }
 
+    public function viewcomplaint()
+    {
+        return response()->json(["success" => true, "complaints" => Complaint::all()],200);
+    }
+
     public function deleteuser(Request $request)
     {
         $validator = Validator::make($request->all(),[

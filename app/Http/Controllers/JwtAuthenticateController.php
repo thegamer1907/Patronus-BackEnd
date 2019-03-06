@@ -12,6 +12,7 @@ use App\User;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -74,7 +75,14 @@ class JwtAuthenticateController extends Controller
 
         $role = Role::where('name', '=', $request->input('role'))->first();
         //$user->attachRole($request->input('role'));
+        if(!$user || !$role)
+        {
+            return response()->json(['error' => "Either role or user doesn't exist"],400);
+        }
+        $existing_role = $user->roles[0];
+        $user->roles()->detach($existing_role->id);
         $user->roles()->attach($role->id);
+
         return response()->json(['message' => "Assigned"]);
     }
 
