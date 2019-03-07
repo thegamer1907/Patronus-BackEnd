@@ -21,14 +21,6 @@ Route::post('/signup','UserController@signup');
 Route::group(['middleware' => ['ability:superuser,create_user']], function()
 {
 
-// Route to create a new role
-    Route::post('/role', 'JwtAuthenticateController@createRole');
-// Route to create a new permission
-    Route::post('/permission', 'JwtAuthenticateController@createPermission');
-// Route to assign role to user
-    Route::post('/assign-role', 'JwtAuthenticateController@assignRole');
-// Route to attache permission to a role
-    Route::post('/attach-permission', 'JwtAuthenticateController@attachPermission');
     // Protected route
     Route::get('/users', 'JwtAuthenticateController@index');
     Route::post('/deleteuser', 'UserController@deleteuser');
@@ -49,6 +41,15 @@ Route::group(['middleware' => ['ability:bankmanager|superuser,create_user']], fu
 {
     Route::post('/resolvecomplaint', 'UserController@resolvecomplaint');
     Route::get('/viewcomplaint', 'UserController@viewcomplaint');
+    Route::get('/getallroles', 'UserController@getallroles');
+    // Route to create a new role
+    Route::post('/role', 'JwtAuthenticateController@createRole');
+// Route to create a new permission
+    Route::post('/permission', 'JwtAuthenticateController@createPermission');
+// Route to assign role to user
+    Route::post('/assign-role', 'JwtAuthenticateController@assignRole');
+// Route to attache permission to a role
+    Route::post('/attach-permission', 'JwtAuthenticateController@attachPermission');
 });
 
 

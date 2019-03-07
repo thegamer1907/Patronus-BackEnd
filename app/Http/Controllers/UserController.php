@@ -193,8 +193,18 @@ class UserController extends Controller
 
         $complaint = ['email' => Auth::user()->email,'type' => $request->type, 'message' => $request->message, 'resolved' => false];
 
-       $res =  Complaint::whereEmailAndTypeAndMessage(Auth::user()->email,$request->type,$request->message)->update(['resolved' => true]);
-        return response()->json(["success" => true, "message" =>"Resolved Successfully"],200);
+       $res =  Complaint::whereEmailAndTypeAndMessage(Auth::user()->email,$request->type,$request->message)->first();
+       if(!$res)
+       {
+           return response()->json(["success" => false, "error" =>"Complaint not found"],404);
+       }
+       else
+       {
+           $res->update(['resolved' => true]);
+           return response()->json(["success" => true, "message" =>"Resolved Successfully"],200);
+       }
+
+
     }
 
     public function viewcomplaint()
@@ -224,6 +234,13 @@ class UserController extends Controller
             return response()->json(["success" => true, "message" =>"Account Deleted Successfully"],200);
         }
     }
+
+    public function getallroles()
+    {
+        return response()->json(["success" => true, "Roles" => Role::all()],200);
+    }
+
+
 
 //    public function bulkmail()
 //    {
