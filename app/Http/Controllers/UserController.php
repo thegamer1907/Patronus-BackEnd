@@ -182,6 +182,7 @@ class UserController extends Controller
     public function resolvecomplaint(Request $request)
     {
         $validator = Validator::make($request->all(),[
+            'email' => 'required|exists:users,email',
             'type' => 'required|in:Feedback,Complaint',
             'message' => 'required'
         ]);
@@ -193,7 +194,7 @@ class UserController extends Controller
 
         $complaint = ['email' => Auth::user()->email,'type' => $request->type, 'message' => $request->message, 'resolved' => false];
 
-       $res =  Complaint::whereEmailAndTypeAndMessage(Auth::user()->email,$request->type,$request->message)->first();
+       $res =  Complaint::whereEmailAndTypeAndMessage($request->email,$request->type,$request->message)->first();
        if(!$res)
        {
            return response()->json(["success" => false, "error" =>"Complaint not found"],404);
