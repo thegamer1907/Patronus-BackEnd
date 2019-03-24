@@ -43,6 +43,8 @@ Route::group(['middleware' => ['ability:user|superuser|bankmanager,create_user']
     Route::get('/viewbenificiary', 'UserController@viewbenificiary');
     Route::post('/deletebenificiary', 'UserController@deletebenificiary');
     Route::post('/filecomplaint', 'UserController@filecomplaint');
+    Route::post('/starttransfer', 'UserController@starttransfer');
+    Route::post('/completetransfer', 'UserController@completetransfer');
 });
 
 Route::group(['middleware' => ['ability:bankmanager|superuser,create_user']], function()
@@ -51,6 +53,9 @@ Route::group(['middleware' => ['ability:bankmanager|superuser,create_user']], fu
     Route::get('/viewcomplaint', 'UserController@viewcomplaint');
     Route::get('/users', 'JwtAuthenticateController@index');
     Route::post('/deleteuser', 'UserController@deleteuser');
+    Route::post('/blockaccount', 'UserController@blockaccount');
+    Route::post('/unblockaccount', 'UserController@unblockaccount');
+    Route::get('/getallblocked', 'UserController@getallblocked');
 });
 
 
