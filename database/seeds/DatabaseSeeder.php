@@ -4,6 +4,7 @@ use Illuminate\Database\Seeder;
 use App\User;
 use App\Account;
 use App\Role;
+use App\block_status;
 
 class DatabaseSeeder extends Seeder
 {
@@ -42,6 +43,12 @@ class DatabaseSeeder extends Seeder
             ['email' => 'akashkravi@gmail.com', 'account_no' => 1002 , 'balance' => 100000]
         );
 
+        $status = array(
+            ['account_no' => 1000, 'status' => false],
+            ['account_no' => 1001, 'status' => false],
+            ['account_no' => 1002, 'status' => false]
+        );
+
         foreach ($users as $user)
         {
             User::create($user);
@@ -53,6 +60,11 @@ class DatabaseSeeder extends Seeder
         foreach($accounts as $account)
         {
             Account::create($account);
+        }
+
+        foreach($status as $s)
+        {
+            block_status::create($s);
         }
     }
 }
