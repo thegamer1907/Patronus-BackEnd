@@ -45,6 +45,7 @@ Route::group(['middleware' => ['ability:user|superuser|bankmanager,create_user']
     Route::post('/filecomplaint', 'UserController@filecomplaint');
     Route::post('/starttransfer', 'UserController@starttransfer');
     Route::post('/completetransfer', 'UserController@completetransfer');
+    Route::get('/viewtransaction', 'UserController@viewtransaction');
 });
 
 Route::group(['middleware' => ['ability:bankmanager|superuser,create_user']], function()
@@ -56,6 +57,7 @@ Route::group(['middleware' => ['ability:bankmanager|superuser,create_user']], fu
     Route::post('/blockaccount', 'UserController@blockaccount');
     Route::post('/unblockaccount', 'UserController@unblockaccount');
     Route::get('/getallblocked', 'UserController@getallblocked');
+    Route::get('/alltransaction', 'UserController@alltransaction');
 });
 
 

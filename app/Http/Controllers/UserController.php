@@ -370,6 +370,22 @@ class UserController extends Controller
         }
     }
 
+    public function viewtransaction()
+    {
+        $account = Account::whereEmail(Auth::user()->email)->first();
+        $trans = transactions::where('from_account_no', $account->account_no)->orWhere(function ($query) {
+            $account = Account::whereEmail(Auth::user()->email)->first();
+            $query->where('to_account_no', $account->account_no);
+        })->get();
+        return response()->json(["success" => true, "Transactions" => $trans , "Account_no" => $account->account_no],200);
+    }
+
+
+    public function alltransaction()
+    {
+        return response()->json(["success" => true, "Transactions" => transactions::all()],200);
+    }
+
 
 
 
